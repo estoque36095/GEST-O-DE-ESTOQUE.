@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gestão de Estoque</title>
+
+  <!-- Fonte moderna (Poppins) -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #d0e8ff, #a8d0ff);
+      min-height: 100vh;
+      color: #03396c;
+    }
+
+    /* Cabeçalho */
+    header {
+      background-color: #ffffffdd;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #03396c;
+    }
+
+    /* Menu de navegação */
+    nav {
+      background: #ffffffcc;
+      padding: 15px 30px;
+      display: flex;
+      gap: 20px;
+      border-bottom: 1px solid #ccc;
+      justify-content: flex-start;
+    }
+
+    nav button {
+      background-color: #5a9fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    nav button:hover {
+      background-color: #3b7ddd;
+    }
+
+    /* Conteúdo */
+    .container {
+      display: none;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 30px 40px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #014f86;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px 15px;
+      margin-top: 6px;
+      border-radius: 8px;
+      border: 1px solid #90c8ff;
+      font-size: 1rem;
+      background: #e6f0ff;
+      color: #03396c;
+    }
+
+    input:focus {
+      background: #cde1ff;
+      border-color: #5a9fff;
+      outline: none;
+    }
+
+    button.gerar {
+      width: 100%;
+      margin-top: 30px;
+      padding: 15px;
+      font-size: 1.1rem;
+      background: #5a9fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+      color: white;
+      box-shadow: 0 5px 15px rgba(90,159,255,0.6);
+    }
+
+    button.gerar:hover {
+      background: #3b7ddd;
+    }
+
+    textarea {
+      width: 100%;
+      height: 250px;
+      margin-top: 25px;
+      border-radius: 10px;
+      border: 1px solid #90c8ff;
+      padding: 15px;
+      font-family: monospace;
+      font-size: 1rem;
+      background: #e6f0ff;
+      color: #03396c;
+      resize: none;
+    }
+
+    .home {
+      display: none;
+      text-align: center;
+      margin-top: 50px;
+      font-size: 1.4rem;
+      color: #03396c;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cabeçalho -->
+  <header>
+    <h1>Gestão de Estoque</h1>
+  </header>
+
+  <!-- Menu de navegação -->
+  <nav>
+    <button onclick="mostrarPagina('home')">Home</button>
+    <button onclick="mostrarPagina('gerador')">Gerar Endereços</button>
+    <!-- Futuras opções: <button>Produtos</button> <button>Relatórios</button> -->
+  </nav>
+
+  <!-- Página inicial -->
+  <div class="home" id="home">
+    <p>Bem-vindo ao sistema de gestão de estoque.<br>
+    Escolha uma das opções acima para começar.</p>
+  </div>
+
+  <!-- Página do Gerador -->
+  <div class="container" id="gerador">
+    <h2 style="text-align: center; margin-bottom: 20px;">Gerador Flexível de Endereços</h2>
+
+    <label>Armazém - Início:</label>
+    <input id="armIni" type="text" placeholder="Ex: FR" />
+
+    <label>Armazém - Fim:</label>
+    <input id="armFim" type="text" placeholder="Ex: FR" />
+
+    <label>Rua - Início:</label>
+    <input id="ruaIni" type="text" placeholder="Ex: A" />
+
+    <label>Rua - Fim:</label>
+    <input id="ruaFim" type="text" placeholder="Ex: C" />
+
+    <label>Módulo - Início:</label>
+    <input id="modIni" type="text" placeholder="Ex: 01" />
+
+    <label>Módulo - Fim:</label>
+    <input id="modFim" type="text" placeholder="Ex: 03" />
+
+    <label>Nível - Início:</label>
+    <input id="nivIni" type="text" placeholder="Ex: 01" />
+
+    <label>Nível - Fim:</label>
+    <input id="nivFim" type="text" placeholder="Ex: 02" />
+
+    <label>Apartamento - Início:</label>
+    <input id="aptIni" type="text" placeholder="Ex: 01" />
+
+    <label>Apartamento - Fim:</label>
+    <input id="aptFim" type="text" placeholder="Ex: 03" />
+
+    <button class="gerar" onclick="gerarEnderecos()">Gerar Endereços</button>
+
+    <textarea id="resultado" readonly placeholder="Os endereços gerados aparecerão aqui..."></textarea>
+  </div>
+
+  <!-- Script JS -->
+  <script>
+    // Alterna entre as páginas
+    function mostrarPagina(pagina) {
+      document.getElementById('home').style.display = 'none';
+      document.getElementById('gerador').style.display = 'none';
+      document.getElementById(pagina).style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Mostra a Home ao carregar
+    window.onload = () => mostrarPagina('home');
+
+    function isNumber(value) {
+      return /^\d+$/.test(value);
+    }
+
+    function rangeNumber(start, end) {
+      const s = parseInt(start);
+      const e = parseInt(end);
+      const list = [];
+      for (let i = s; i <= e; i++) {
+        list.push(i.toString().padStart(2, '0'));
+      }
+      return list;
+    }
+
+    function rangeLetter(start, end) {
+      const list = [];
+      let sCode = start.toUpperCase().charCodeAt(0);
+      let eCode = end.toUpperCase().charCodeAt(0);
+      for (let c = sCode; c <= eCode; c++) {
+        list.push(String.fromCharCode(c));
+      }
+      return list;
+    }
+
+    function rangeGeneric(start, end) {
+      if (start === end) return [start];
+      return [start];
+    }
+
+    function generateRange(start, end) {
+      if (isNumber(start) && isNumber(end)) {
+        return rangeNumber(start, end);
+      }
+      if (start.length === 1 && end.length === 1 && /^[A-Za-z]$/.test(start) && /^[A-Za-z]$/.test(end)) {
+        return rangeLetter(start, end);
+      }
+      return rangeGeneric(start, end);
+    }
+
+    function gerarEnderecos() {
+      const armazens = generateRange(document.getElementById('armIni').value.trim(), document.getElementById('armFim').value.trim());
+      const ruas = generateRange(document.getElementById('ruaIni').value.trim(), document.getElementById('ruaFim').value.trim());
+      const modulos = generateRange(document.getElementById('modIni').value.trim(), document.getElementById('modFim').value.trim());
+      const niveis = generateRange(document.getElementById('nivIni').value.trim(), document.getElementById('nivFim').value.trim());
+      const apartamentos = generateRange(document.getElementById('aptIni').value.trim(), document.getElementById('aptFim').value.trim());
+
+      let resultado = '';
+
+      for (let a of armazens) {
+        for (let r of ruas) {
+          for (let m of modulos) {
+            for (let n of niveis) {
+              for (let ap of apartamentos) {
+                resultado += `${a}/${r}/${m}/${n}/${ap}\n`;
+              }
+            }
+          }
+        }
+      }
+
+      document.getElementById('resultado').value = resultado || 'Preencha todos os campos corretamente.';
+    }
+  </script>
+
+</body>
+</html>
